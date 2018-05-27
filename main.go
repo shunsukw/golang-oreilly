@@ -45,7 +45,7 @@ func main() {
 		google.New("275210167852-s7jbuubs4smfb99pgrc9pjpg4kvdg80t.apps.googleusercontent.com", "2gBONHsMqLvTYGxn1qj1cJ0B", "http://localhost:8080/auth/callback/google"),
 	)
 
-	r := newRoom(UseGravatar)
+	r := newRoom(UseFileSystemAvatar)
 
 	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
@@ -61,6 +61,7 @@ func main() {
 		w.Header()["Location"] = []string{"/chat"}
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	})
+	http.Handle("/upload", &templateHandler{filename: "upload.html"})
 	http.HandleFunc("/uploader", uploaderHandler)
 	http.Handle("/avatars/",
 		http.StripPrefix("/avatars/",
